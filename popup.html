@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Logger</title>
+  <style>
+    body {
+      width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .event {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .valid {
+      background-color: #e6ffe6;
+    }
+    .invalid {
+      background-color: #ffe6e6;
+    }
+    .event-name {
+      font-weight: bold;
+    }
+    .error {
+      color: red;
+    }
+    #refreshButton {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Event Logger</h1>
+  <button id="refreshButton">Refresh Events</button>
+  <div id="eventsContainer"></div>
+  <script src="popup.js"></script>
+  <script src="background.js"></script>
+  <script src="content.js"></script>
+
+</body>
+</html>
