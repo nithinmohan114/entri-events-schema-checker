@@ -158,7 +158,12 @@ export function Popup() {
   return (
     <div className="flex w-[800px] h-[600px] bg-[#121212] text-gray-200">
       <div className="w-1/2 p-4 border-r border-gray-700">
-        <h1 className="text-2xl font-bold mb-4">Analytics Events</h1>
+        <div className="position-sticky top-0">
+          <div className="flex items-center mb-4">
+            <img src="./icon_48.png" alt="Icon" className="mr-2 h-6 w-6" />
+            <h1 className="text-2xl font-bold">Analytics Events</h1>
+          </div>
+        </div>
         <EventList
           events={events}
           selectedEvent={selectedEvent}
