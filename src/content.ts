@@ -39,11 +39,3 @@ window.addEventListener(
   "entri-schema-validation",
   handleSchemaValidation as EventListener
 );
-
-// Remove the event listener when the document is unloaded
-window.addEventListener("unload", function () {
-  window.removeEventListener(
-    "entri-schema-validation",
-    handleSchemaValidation as EventListener
-  );
-});
