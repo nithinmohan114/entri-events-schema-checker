@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "entri-events-schema-checker",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
