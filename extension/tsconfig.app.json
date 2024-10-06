@@ -24,7 +24,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "types": [
-      "chrome"
+      "chrome",
+      "node"
     ],
     "baseUrl": ".",
     "paths": {
@@ -34,6 +35,6 @@
     }
   },
   "include": [
-    "src"
+    "src/**/*"
   ]
 }

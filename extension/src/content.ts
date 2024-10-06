@@ -1,11 +1,4 @@
-console.log("Content script loaded for Event Logger");
-let isProcessing = false;
-
-// Define the event listener function
 function handleSchemaValidation(event: CustomEvent) {
-  if (isProcessing) return; // Prevent duplicate processing
-  isProcessing = true;
-
   const { eventName, eventPayload, appPlatform } = event.detail;
 
   console.log(
@@ -15,22 +8,19 @@ function handleSchemaValidation(event: CustomEvent) {
   );
 
   try {
-    console.log("Sending event data to background script");
     chrome.runtime.sendMessage(
       {
-        action: "logEvent",
+        action: "validate",
         eventName,
         eventPayload,
         appPlatform,
       },
       (response) => {
         console.log("Response from background script:", response);
-        isProcessing = false; // Reset the flag after processing
       }
     );
   } catch (e) {
     console.error("Error sending event data:", e);
-    isProcessing = false; // Reset the flag on error
   }
 }
 

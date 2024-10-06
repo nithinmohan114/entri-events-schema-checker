@@ -1,14 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { ScrollArea } from "./components/ui/scroll-area";
-
-interface EventSchema {
-  event_name: { type: "string"; required: boolean };
-  timestamp: { type: "number"; required: boolean };
-  user_id: { type: "string"; required: boolean };
-  page_url: { type: "string"; required: boolean };
-  browser: { type: "string"; required: boolean };
-}
 
 interface Event {
   event_name: string;
@@ -17,41 +9,6 @@ interface Event {
   page_url: string;
   browser: string;
 }
-
-interface ValidationResult {
-  isValid: boolean;
-  violatedField: string | null;
-}
-
-// Mock schema for validation
-const mockSchema: EventSchema = {
-  event_name: { type: "string", required: true },
-  timestamp: { type: "number", required: true },
-  user_id: { type: "string", required: true },
-  page_url: { type: "string", required: true },
-  browser: { type: "string", required: true },
-};
-
-// Mock function to generate random events
-const generateRandomEvent = (): Event => ({
-  event_name: Math.random() > 0.5 ? "page_view" : "button_click",
-  timestamp: Date.now(),
-  user_id:
-    Math.random() > 0.8 ? undefined : Math.random().toString(36).substring(7),
-  page_url:
-    Math.random() > 0.5 ? "https://example.com" : "https://example.com/about",
-  browser: Math.random() > 0.5 ? "Chrome" : "Firefox",
-});
-
-// Validation function
-const validateEvent = (event: Event): ValidationResult => {
-  for (const [key, value] of Object.entries(mockSchema)) {
-    if (value.required && !(key in event)) {
-      return { isValid: false, violatedField: key };
-    }
-  }
-  return { isValid: true, violatedField: null };
-};
 
 interface EventItemProps {
   event: Event;
@@ -64,8 +21,6 @@ const EventItem: React.FC<EventItemProps> = ({
   isSelected,
   onClick,
 }) => {
-  const { isValid } = validateEvent(event);
-
   return (
     <div
       className={`flex items-center p-2 cursor-pointer hover:bg-gray-800 ${
@@ -73,7 +28,7 @@ const EventItem: React.FC<EventItemProps> = ({
       }`}
       onClick={onClick}
     >
-      {isValid ? (
+      {event ? (
         <CheckCircle className="w-5 h-5 text-green-400 mr-2" />
       ) : (
         <AlertCircle className="w-5 h-5 text-red-400 mr-2" />
@@ -116,44 +71,34 @@ interface DetailsPanelProps {
 }
 
 const DetailsPanel: React.FC<DetailsPanelProps> = ({ event }) => {
-  const { isValid, violatedField } = validateEvent(event);
-
   return (
     <div className="p-4 text-gray-200">
       <h2 className="text-xl font-bold mb-4">Event Details</h2>
       {Object.entries(event).map(([key, value]) => (
         <div key={key} className="mb-2">
-          <span
+          {/* <span
             className={`font-semibold ${
               key === violatedField ? "text-red-400" : ""
             }`}
           >
             {key}:
-          </span>{" "}
+          </span>{" "} */}
+          <span className={`font-semibold`}>{key}:</span>{" "}
           {value !== undefined ? value.toString() : "undefined"}
         </div>
       ))}
-      {!isValid && (
+      {/* {!isValid && (
         <div className="mt-4 p-2 bg-red-900 text-red-200 rounded">
           Schema violation: {violatedField} is required but missing or invalid.
         </div>
-      )}
+      )} */}
     </div>
   );
 };
 
 export function Popup() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const events: EventListProps["events"] = []; // Use the custom hook
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newEvent = generateRandomEvent();
-      setEvents((prevEvents) => [newEvent, ...prevEvents.slice(0, 99)]);
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="flex w-[800px] h-[600px] bg-[#121212] text-gray-200">

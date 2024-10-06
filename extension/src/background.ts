@@ -1,3 +1,5 @@
+import { httpService } from "./lib/httpService";
+
 console.log("Background script loaded");
 
 interface EventSchema {
@@ -13,6 +15,13 @@ interface EventSchema {
 //     console.log("Schemas loaded:", eventSchemas);
 //   })
 //   .catch((error) => console.error("Error loading schemas:", error));
+
+httpService
+  .get("/")
+  .then((data) => {
+    console.log("Data:", data);
+  })
+  .catch((error) => console.error("Error loading schemas:", error));
 
 const eventSchemas: EventSchema = {
   entriapp_login_language_selected_clicked: { lang_codes: "string" },
@@ -57,7 +66,7 @@ const processEvent = (
   sender: chrome.runtime.MessageSender,
   sendResponse: (response: { status: string }) => void
 ) => {
-  if (message.action === "logEvent") {
+  if (message.action === "validates") {
     console.log("Processing event data:", message.eventPayload, sender);
     try {
       const schema = eventSchemas[message.eventName];
