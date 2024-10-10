@@ -6,7 +6,9 @@ export class ValidationService {
   private ajv: Ajv;
 
   constructor() {
-    this.ajv = new Ajv(); // Initialize AJV
+    this.ajv = new Ajv({
+      allErrors: true,
+    }); // Initialize AJV
   }
 
   // Validate data against a schema
@@ -24,9 +26,5 @@ export class ValidationService {
     const valid = validate(data);
 
     return { valid, errors: validate.errors };
-  }
-
-  getErrors() {
-    // Implementation of error retrieval
   }
 }

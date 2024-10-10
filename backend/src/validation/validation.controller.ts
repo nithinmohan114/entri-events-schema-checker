@@ -4,8 +4,12 @@ import { ValidationService } from './validation.service';
 
 // Define a type for the expected request body
 interface ValidateRequest {
-  name: string;
-  age: number;
+  eventName: string;
+  eventPayload: {
+    name: string;
+    age: number;
+    lang_code: number;
+  };
 }
 
 @Controller('validate')
@@ -17,19 +21,25 @@ export class ValidationController {
     valid: boolean;
     errors?: any;
   } {
-    // Ensure strictNullChecks is enabled in tsconfig.json
-    // Update the schema type to JSONSchemaType
-    const schema: JSONSchemaType<{ name: string; age: number }> = {
+    const schema: JSONSchemaType<{
+      name: string;
+      age: number;
+      lang_code: number;
+    }> = {
       type: 'object',
       properties: {
         name: { type: 'string' },
         age: { type: 'number' },
+        lang_code: { type: 'number' },
       },
-      required: ['name', 'age'], // Ensure required fields are specified
-      additionalProperties: false, // Set to false to disallow additional properties
+      required: ['name', 'age', 'lang_code'],
+      additionalProperties: false,
     };
 
-    const { valid, errors } = this.validationService.validate(schema, body);
+    const { valid, errors } = this.validationService.validate(
+      schema,
+      body.eventPayload,
+    );
 
     return {
       valid,
